@@ -47,11 +47,11 @@ func sendLink(ctx *ext.Context, u *ext.Update) error {
 		return dispatcher.EndGroups
 	}
 	if len(config.ValueOf.AllowedUsers) != 0 && !utils.Contains(config.ValueOf.AllowedUsers, chatId) {
-		ctx.Reply(u, "You are not allowed to use this bot.", nil)
+		ctx.Reply(u, "白名单模式已开启 你不在白名单内 请找 @listder 申请", nil)
 		return dispatcher.EndGroups
 	}
 	if len(config.ValueOf.BlockUsers) != 0 && utils.Contains(config.ValueOf.BlockUsers, chatId) {
-		ctx.Reply(u, "You are blocked from using this bot.", nil)
+		ctx.Reply(u, "你因为某些原因被封禁了 请找 @listder 解封", nil)
 		return dispatcher.EndGroups
 	}
 	supported, err := supportedMediaFilter(u.EffectiveMessage)
@@ -59,7 +59,7 @@ func sendLink(ctx *ext.Context, u *ext.Update) error {
 		return err
 	}
 	if !supported {
-		ctx.Reply(u, "Sorry, this message type is unsupported.", nil)
+		ctx.Reply(u, "不支持的消息", nil)
 		return dispatcher.EndGroups
 	}
 	update, err := utils.ForwardMessages(ctx, chatId, config.ValueOf.LogChannelID, u.EffectiveMessage.ID)
